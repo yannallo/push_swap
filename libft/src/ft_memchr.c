@@ -10,20 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-void	*ft_memchr(const void *haystack, int needle, size_t size)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
 	size_t			i;
 	unsigned char	*str;
-	unsigned char	n;
 
 	i = 0;
-	str = (unsigned char *)haystack;
-	n = (char)needle;
-	while (i < size)
+	str = (unsigned char *) s;
+	while (i < n)
 	{
-		if (str[i] == n)
+		if (str[i] == (unsigned char) c)
 			return (str + i);
 		i++;
 	}

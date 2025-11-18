@@ -1,37 +1,36 @@
 NAME = push_swap
 
 CC = gcc
-FLAG = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -I./ -I$(LIBFT_DIR)
+LDFLAGS = -L$(LIBFT_DIR)
+LDLIBS = -lft
+
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
 HEADER = push_swap.h
 
-OBJ_DIR = obj
-SRC_DIR = src
-LIBFT_DIR = libft
+SRC = src/main.c src/parse.c src/quicksort.c src/radixsort.c src/sort.c src/swap.c src/swap2.c src/utils.c
+OBJ = $(SRC:.c=.o)
 
-LIBFT = $(LIBFT_DIR)/libft.a
-SRC = $(wildcard $(SRC_DIR)/*.c)
-OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+all: $(NAME)
 
-all: $(LIBFT) $(NAME)
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAG) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER) | $(OBJ_DIR)
-	$(CC) $(FLAG) -c $< -o $@
-
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+%.o: %.c $(HEADER) Makefile
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

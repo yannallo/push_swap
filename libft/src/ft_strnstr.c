@@ -10,23 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-char	*ft_strnstr(char *str, const char *needle, size_t size)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
 	size_t	j;
+	size_t	n;
 
+	if (!little || !little[0])
+		return ((char *) big);
 	i = 0;
-	if (needle[i] == '\0')
-		return (str);
-	while (str[i] && i <= size)
+	n = ft_strlen(little);
+	while (big[i] && i < len)
 	{
 		j = 0;
-		while (str[i + j] == needle[j] && str[i + j])
+		while (big[i + j] && big[i + j] == little[j])
 			j++;
-		if (j == ft_strlen(needle) && i + j <= size)
-			return (str + i);
+		if (j == n && i + j <= len)
+			return ((char *) big + i);
 		i++;
 	}
 	return (NULL);

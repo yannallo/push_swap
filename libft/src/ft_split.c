@@ -10,79 +10,72 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-static size_t	count_nbr_word(char const *s, char c)
+static void	free_array(char **array)
 {
 	size_t	i;
-	size_t	count;
 
 	i = 0;
-	count = 0;
-	while (s[i])
+	while (array[i])
 	{
-		if (s[i] != c)
-		{
-			i++;
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+static size_t	ft_wordcount(const char *s, char c)
+{
+	size_t	count;
+
+	count = 0;
+	while (*s)
+	{
+		while (*s && *s == c)
+			s++;
+		if (*s)
 			count++;
-			while (s[i] && s[i] != c)
-				i++;
-		}
-		else
-			i++;
+		while (*s && *s != c)
+			s++;
 	}
 	return (count);
 }
 
-static void	*free_array(char **array)
-{
-	while (*array != NULL)
-	{
-		free(*array);
-		array++;
-	}
-	free(array);
-	return (NULL);
-}
-
-static char	**fill_array(char const *s, char c, char **array)
+static size_t	ft_wordsize(const char *s, char c)
 {
 	size_t	i;
-	size_t	word;
-	size_t	start;
 
 	i = 0;
-	word = 0;
-	while (s[i])
-	{
-		start = i;
-		if (s[i] != c)
-		{
-			while (s[i] != c && s[i])
-				i++;
-			array[word] = ft_substr(s, start, i - start);
-			if (!array[word])
-				return (free_array(array));
-			word++;
-		}
-		else
-			i++;
-	}
-	return (array);
+	while (s[i] && s[i] != c)
+		i++;
+	return (i);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**array;
+	char	**res;
+	size_t	i;
 	size_t	count;
+	size_t	size;
 
-	count = count_nbr_word(s, c);
-	if (!s)
+	count = ft_wordcount(s, c);
+	res = malloc(sizeof(char *) * (count + 1));
+	if (!res)
 		return (NULL);
-	array = malloc(sizeof(char *) * (count + 1));
-	if (!array)
-		return (NULL);
-	array[count] = NULL;
-	array = fill_array(s, c, array);
-	return (array);
+	i = 0;
+	while (i < count)
+	{
+		while (*s && *s == c)
+			s++;
+		size = ft_wordsize(s, c);
+		res[i] = malloc(sizeof(char) * (size + 1));
+		if (!res[i])
+			return (free_array(res), NULL);
+		ft_strlcpy(res[i], s, size + 1);
+		s += size;
+		i++;
+	}
+	res[count] = NULL;
+	return (res);
 }

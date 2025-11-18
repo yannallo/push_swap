@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*buf;
-	size_t	size_buf;
+	size_t	size;
 
-	size_buf = ft_strlen(s1) + ft_strlen(s2) + 1;
-	buf = malloc(sizeof(char) * size_buf);
-	if (!(buf))
+	size = ft_strlen(s1) + ft_strlen(s2) + 1;
+	buf = malloc(sizeof(char) * size);
+	if (!buf)
 		return (NULL);
-	ft_strlcpy(buf, s1, size_buf);
-	ft_strlcat(buf, s2, size_buf);
+	ft_strlcpy(buf, s1, size);
+	ft_strlcat(buf, s2, size);
 	return (buf);
 }

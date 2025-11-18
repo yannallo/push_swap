@@ -10,61 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-static int	count(long int nbr)
+static size_t	ft_count(int n)
 {
-	int	i;
-	int	sign;
+	size_t	size;
 
-	i = 1;
-	sign = 0;
-	if (nbr < 0)
+	size = (n <= 0);
+	while (n)
 	{
-		sign = 1;
-		nbr = -nbr;
+		n /= 10;
+		size++;
 	}
-	while (nbr > 9)
-	{
-		nbr = nbr / 10;
-		i++;
-	}
-	return (i + sign);
-}
-
-static char	*fill_array(char *buf, long int nbr, int size)
-{
-	int	i;
-
-	i = size - 1;
-	while (i >= 0)
-	{
-		buf[i] = (nbr % 10) + '0';
-		nbr = nbr / 10;
-		i--;
-	}
-	buf[size] = '\0';
-	return (buf);
+	return (size);
 }
 
 char	*ft_itoa(int n)
 {
-	long int	nbr;
-	int			size;
-	char		*buf;
+	long	nbr;
+	char	*res;
+	size_t	size;
 
-	nbr = (long int)n;
-	size = count(nbr);
-	buf = malloc(sizeof(char) * size + 1);
-	if (!(buf))
+	size = ft_count(n);
+	res = malloc(sizeof(char) * (size + 1));
+	if (!res)
 		return (NULL);
+	res[size] = '\0';
+	nbr = n;
+	if (nbr == 0)
+		res[0] = '0';
 	if (nbr < 0)
 	{
+		res[0] = '-';
 		nbr = -nbr;
-		fill_array(buf, nbr, size);
-		buf[0] = '-';
 	}
-	else
-		fill_array(buf, nbr, size);
-	return (buf);
+	while (nbr)
+	{
+		res[--size] = (nbr % 10) + '0';
+		nbr /= 10;
+	}
+	return (res);
 }

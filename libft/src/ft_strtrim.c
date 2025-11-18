@@ -10,76 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
-
-static int	first(char const *s1, char const *set)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (set[j] != '\0')
-	{
-		if (s1[i] == set[j])
-		{
-			j = 0;
-			i++;
-		}
-		else
-			j++;
-	}
-	return (i);
-}
-
-static int	last(char const *s1, char const *set)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = ft_strlen(s1) - 1;
-	while (set[i] != '\0')
-	{
-		if (s1[j] == set[i])
-		{
-			i = 0;
-			j--;
-		}
-		else
-			i++;
-	}
-	return (j + 1);
-}
-
-static char	*fill_array(char const *s1, char const *set, char *buf)
-{
-	int	i;
-	int	j;
-
-	i = first(s1, set);
-	j = 0;
-	while (i < last(s1, set))
-	{
-		buf[j] = s1[i];
-		j++;
-		i++;
-	}
-	buf[j] = '\0';
-	return (buf);
-}
+#include "libft.h"
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		size;
 	char	*buf;
+	size_t	start;
+	size_t	end;
 
-	size = last(s1, set) - first(s1, set) + 1;
-	if (size <= 0)
-		size = 1;
-	buf = malloc(sizeof(char) * size);
-	if (!(buf))
+	if (!s1 || !set)
 		return (NULL);
-	fill_array(s1, set, buf);
+	start = 0;
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	end = ft_strlen(s1);
+	while (end - 1 > start && ft_strchr(set, s1[end - 1]))
+		end--;
+	buf = malloc(sizeof(char) * (end - start + 1));
+	if (!buf)
+		return (NULL);
+	ft_strlcpy(buf, s1 + start, end - start + 1);
 	return (buf);
 }

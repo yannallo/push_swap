@@ -10,17 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
 void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_list	*temp;
+	t_list	*tmp;
 
-	temp = *lst;
-	while (temp)
+	while (*lst)
 	{
-		ft_lstdelone(temp, del);
-		temp = temp->next;
+		tmp = *lst;
+		*lst = (*lst)->next;
+		ft_lstdelone(tmp, del);
 	}
-	*lst = NULL;
 }

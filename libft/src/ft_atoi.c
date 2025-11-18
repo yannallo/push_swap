@@ -10,33 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 
-long	ft_atoi(const char *str)
+int	ft_atoi(const char *nptr)
 {
-	size_t	i;
-	long	result;
 	int		sign;
+	int		result;
+	size_t	i;
 
 	i = 0;
-	sign = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+	while ((nptr[i] >= '\t' && nptr[i] <= '\r') || nptr[i] == ' ')
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	sign = 1;
+	if (nptr[i] == '+')
+		i++;
+	else if (nptr[i] == '-')
 	{
-		if (str[i] == '-')
-			sign = -1;
+		sign = -1;
 		i++;
 	}
 	result = 0;
-	while (str[i] >= 48 && str[i] <= 57)
+	while (ft_isdigit(nptr[i]))
 	{
-		result = result * 10 + str[i] - 48;
-		if (result != ((result * 10 + str[i] - 48) / 10) && sign == -1)
-			return (0);
-		if (result != ((result * 10 + str[i] - 48) / 10) && sign == 1)
-			return (-1);
+		result = result * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return ((result * sign));
+	return (result * sign);
 }
